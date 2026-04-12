@@ -1,0 +1,258 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-cormorant: 'Cormorant Garamond', serif;
+  --font-inter: 'Inter', sans-serif;
+  --color-black: #0a0a0a;
+  --color-white: #fafaf8;
+  --color-gray-50: #f7f7f5;
+  --color-gray-100: #ebebea;
+  --color-gray-200: #d4d4d2;
+  --color-gray-400: #9b9b98;
+  --color-gray-600: #5c5c5a;
+  --color-gray-800: #2d2d2b;
+
+  /* Fluid type scale */
+  --step--1: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --step-0:  clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+  --step-1:  clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
+  --step-2:  clamp(1.25rem, 1.1rem + 0.75vw, 1.75rem);
+  --step-3:  clamp(1.75rem, 1.5rem + 1.25vw, 2.5rem);
+  --step-4:  clamp(2.5rem, 2rem + 2.5vw, 4rem);
+  --step-5:  clamp(3.5rem, 2.5rem + 5vw, 7rem);
+
+  /* Fluid spacing */
+  --space-xs:  clamp(0.5rem,  0.4rem + 0.5vw,  0.75rem);
+  --space-s:   clamp(0.75rem, 0.6rem + 0.75vw, 1.25rem);
+  --space-m:   clamp(1rem,    0.8rem + 1vw,    1.5rem);
+  --space-l:   clamp(1.5rem,  1.2rem + 1.5vw,  2.5rem);
+  --space-xl:  clamp(2rem,    1.5rem + 2.5vw,  4rem);
+  --space-2xl: clamp(3rem,    2rem + 5vw,      7rem);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-inter);
+  color: var(--color-black);
+  background: var(--color-white);
+  overflow-x: hidden;
+  font-size: var(--step-0);
+}
+
+.font-serif { font-family: var(--font-cormorant); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--color-gray-50); }
+::-webkit-scrollbar-thumb { background: var(--color-gray-200); border-radius: 0; }
+
+/* Section side label */
+.section-label {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  letter-spacing: 0.25em;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  font-family: var(--font-inter);
+  font-weight: 400;
+  color: var(--color-gray-400);
+  user-select: none;
+}
+
+/* Nav link */
+.nav-link {
+  position: relative;
+  letter-spacing: 0.12em;
+  font-size: 0.65rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--color-gray-600);
+  transition: color 0.2s;
+  text-decoration: none;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--color-black);
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after { width: 100%; }
+.nav-link:hover { color: var(--color-black); }
+
+/* Gallery filter */
+.filter-btn {
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 8px 0;
+  color: var(--color-gray-400);
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+  background: none;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  cursor: pointer;
+  text-align: left;
+  min-height: 44px; /* touch-friendly */
+  display: flex;
+  align-items: center;
+}
+.filter-btn:hover, .filter-btn.active {
+  color: var(--color-black);
+  border-bottom-color: var(--color-black);
+}
+
+/* Contact input */
+.contact-input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid var(--color-gray-200);
+  background: transparent;
+  padding: 12px 0;
+  font-family: var(--font-inter);
+  font-size: var(--step-0);
+  color: var(--color-black);
+  outline: none;
+  transition: border-color 0.2s;
+  min-height: 44px;
+}
+.contact-input:focus { border-bottom-color: var(--color-black); }
+.contact-input::placeholder { color: var(--color-gray-400); }
+
+/* Admin inputs — touch-friendly */
+.admin-input {
+  width: 100%;
+  border: 1px solid #e8e8e6;
+  background: #fafaf8;
+  padding: 10px 12px;
+  font-family: var(--font-inter);
+  font-size: 0.8rem;
+  color: #0a0a0a;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  border-radius: 0;
+  min-height: 44px;
+}
+.admin-input:focus { border-color: #0a0a0a; background: white; }
+
+.admin-btn {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid #0a0a0a;
+  padding: 12px 20px;
+  min-height: 44px;
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.2s;
+  font-family: var(--font-inter);
+  font-weight: 400;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.admin-btn:hover { background: #0a0a0a; color: white; }
+.admin-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.admin-btn-sm {
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid #d4d4d2;
+  padding: 8px 14px;
+  min-height: 40px;
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.2s;
+  font-family: var(--font-inter);
+  color: #9b9b98;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.admin-btn-sm:hover { border-color: #0a0a0a; color: #0a0a0a; }
+
+/* Dropzone */
+.dropzone {
+  border: 1px dashed #d4d4d2;
+  transition: border-color 0.2s, background 0.2s;
+  cursor: pointer;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dropzone:hover, .dropzone.active { border-color: #0a0a0a; background: #f7f7f5; }
+
+/* Artwork card */
+.artwork-card {
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
+}
+.artwork-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.10);
+}
+
+/* Spinner */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner {
+  width: 16px; height: 16px;
+  border: 1.5px solid #e8e8e6;
+  border-top-color: #0a0a0a;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  display: inline-block;
+}
+
+/* Skeleton shimmer */
+@keyframes shimmer {
+  from { background-position: -400px 0; }
+  to   { background-position: 400px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #f0f0ee 25%, #e8e8e6 50%, #f0f0ee 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+/* ── Performance & scrollbar helpers ─────────────────────────────────────── */
+
+/* Hide scrollbar but keep scroll behaviour (for horizontal category pills) */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar { display: none; }
+
+/* Prevent layout shift while images load — always reserve space */
+img { display: block; max-width: 100%; }
+
+/* Gallery skeleton animation already defined — ensure rounded-none */
+.skeleton { border-radius: 0; }
+
+/* Filter button: space between label and count badge */
+.filter-btn {
+  justify-content: space-between;
+}
+
+/* Touch-action on gallery grid: pinch-zoom allowed but no horizontal scroll conflicts */
+#gallery .grid { touch-action: pan-y; }
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
