@@ -60,7 +60,7 @@ export default function ContactSection() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-              {/* Left — info (ОСТАЛОСЬ БЕЗ ИЗМЕНЕНИЙ) */}
+              {/* Left — info */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -70,7 +70,7 @@ export default function ContactSection() {
                   className="font-serif font-light leading-tight mb-8 md:mb-10"
                   style={{ fontSize: 'clamp(1.75rem, 4.5vw, 3rem)' }}
                 >
-                  Зв'яжіться зі мною
+                  Зв&apos;яжіться зі мною
                 </h2>
 
                 <div className="space-y-5">
@@ -176,7 +176,7 @@ export default function ContactSection() {
                     {/* ВЫБОР КАРТИНЫ */}
                     <div>
                       <label className="text-xs tracking-widest uppercase text-gray-400 font-light block mb-2">
-                        Яка картина вас цікавить? (необов'язково)
+                        Яка картина вас цікавить? (необов&apos;язково)
                       </label>
                       <select
                         value={form.artwork}
