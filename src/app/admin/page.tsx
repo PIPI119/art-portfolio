@@ -18,15 +18,14 @@ import ImageDropzone from '@/components/admin/ImageDropzone';
 
 type Tab = 'general' | 'hero' | 'about' | 'stats' | 'gallery-settings' | 'artworks' | 'contact' | 'footer';
 
-const TABS: { id: Tab; label: string; icon: React.FC<{ size?: number }> }[] = [
+// Найди этот блок:
+const TABS: { id: Tab; label: string; icon: any }[] = [
   { id: 'general',          label: 'Загальне',        icon: Settings      },
   { id: 'hero',             label: 'Hero',             icon: Layout        },
   { id: 'about',            label: 'Про мене',         icon: Type          },
   { id: 'stats',            label: 'Статистика',       icon: BarChartIcon  },
-  { id: 'gallery-settings', label: 'Галерея',          icon: Image         },
-  { id: 'artworks',         label: 'Картини',          icon: Image         },
-  { id: 'contact',          label: 'Контакти',         icon: Phone         },
-  { id: 'footer',           label: 'Футер',            icon: Layout        },
+  { id: 'artworks',         label: 'Роботи',           icon: Palette       },
+  { id: 'contact_settings', label: 'Контакти',         icon: Contact       },
 ];
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
