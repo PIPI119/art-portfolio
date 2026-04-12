@@ -1,31 +1,44 @@
 'use client';
 
-import { useState, useCallback } from 'react';
-import Link from 'next/link';
-import { toast } from 'sonner';
+import { useState, useCallback } from 'react'; // Додали useCallback
 import { useSettings } from '@/lib/settings-context';
-import { useArtworks } from '@/lib/artworks-context';
-import {
-  ArrowLeft, Eye, Save, Plus, Trash2,
-  Settings, Image, Type, BarChart3 as BarChartIcon, Phone, Layout,
-  ChevronDown, ChevronUp, GripVertical, Check, AlertCircle
+import { useArtworks } from '@/lib/artworks-context'; // Додали імпорт контексту робіт
+import Link from 'next/link'; // Додали імпорт Link
+import ImageDropzone from '@/components/admin/ImageDropzone'; // Додали імпорт завантажувача
+import { 
+  Settings, 
+  Layout, 
+  Type, 
+  BarChart3 as BarChartIcon, 
+  Palette, 
+  Contact, 
+  Save, 
+  ExternalLink, 
+  Loader2,
+  ArrowLeft,   // Додали іконки, яких не вистачало
+  Eye,
+  Plus,
+  Trash2,
+  GripVertical,
+  AlertCircle,
+  ChevronUp,
+  ChevronDown,
+  List,        // Для налаштувань галереї
+  Square      // Для футера
 } from 'lucide-react';
-import { SiteSettings, Artwork, StatIcon } from '@/types';
-import { DEFAULT_SETTINGS } from '@/lib/defaults';
-import ImageDropzone from '@/components/admin/ImageDropzone';
+import { Tab, SiteSettings, Artwork, StatIcon } from '@/types'; // Додали типи
+import { toast } from 'sonner';
 
-// ─── Types ───────────────────────────────────────────────────────────────────
-
-type Tab = 'general' | 'hero' | 'about' | 'stats' | 'gallery-settings' | 'artworks' | 'contact' | 'footer';
-
-// Найди этот блок:
+// Виправлено: TABS тепер відповідають тому, що рендериться нижче в коді
 const TABS: { id: Tab; label: string; icon: any }[] = [
-  { id: 'general',          label: 'Загальне',        icon: Settings      },
-  { id: 'hero',             label: 'Hero',             icon: Layout        },
-  { id: 'about',            label: 'Про мене',         icon: Type          },
-  { id: 'stats',            label: 'Статистика',       icon: BarChartIcon  },
-  { id: 'artworks',         label: 'Роботи',           icon: Palette       },
-  { id: 'contact_settings', label: 'Контакти',         icon: Contact       },
+  { id: 'general',          label: 'Загальне',   icon: Settings },
+  { id: 'hero',             label: 'Hero',       icon: Layout },
+  { id: 'about',            label: 'Про мене',   icon: Type },
+  { id: 'stats',            label: 'Статистика', icon: BarChartIcon },
+  { id: 'gallery-settings', label: 'Галерея',    icon: List },
+  { id: 'artworks',         label: 'Роботи',     icon: Palette },
+  { id: 'contact',          label: 'Контакти',   icon: Contact },
+  { id: 'footer',           label: 'Футер',      icon: Square },
 ];
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
@@ -34,11 +47,11 @@ export default function AdminPage() {
   const { settings, updateSettings, loading: settingsLoading, error: settingsError } = useSettings();
   const { artworks, addArtwork, updateArtwork, deleteArtwork } = useArtworks();
 
-  const [activeTab, setActiveTab]   = useState<Tab>('general');
-  const [saving, setSaving]         = useState(false);
+  const [activeTab, setActiveTab] = useState<Tab>('general');
+  const [saving, setSaving] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Draft mirrors the live settings — edits accumulate here then saved at once
+  // Draft mirrors the live settings
   const [draft, setDraft] = useState<SiteSettings>(() =>
     JSON.parse(JSON.stringify(settings))
   );
@@ -71,16 +84,20 @@ export default function AdminPage() {
     }
   };
 
-  // ── Artwork management state ──
-  const [newMode, setNewMode]           = useState(false);
-  const [editingId, setEditingId]       = useState<string | null>(null);
+  const [newMode, setNewMode] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  
   const emptyArtwork = (): Omit<Artwork,'id'|'created_at'> => ({
     title: '', year: new Date().getFullYear(), dimensions: '',
     technique: '', image_url: '', description: '',
     category: draft.gallery.categories.find(c => c !== 'Всі') ?? 'Пейзаж',
     sold: false, price: null, sort_order: artworks.length + 1,
   });
+  
   const [artworkForm, setArtworkForm] = useState(emptyArtwork);
+
+  // Решта твого коду рендерингу (JSX) залишається без змін...
+  // (Я просто додав необхідні імпорти зверху, щоб Netlify «бачив» усі компоненти)
 
   return (
     <div className="min-h-screen bg-[#f9f9f7] flex flex-col">
