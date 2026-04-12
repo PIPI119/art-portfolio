@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useCallback } from 'react'; // Додали useCallback
+import { useState, useCallback } from 'react';
 import { useSettings } from '@/lib/settings-context';
-import { useArtworks } from '@/lib/artworks-context'; // Додали імпорт контексту робіт
-import Link from 'next/link'; // Додали імпорт Link
-import ImageDropzone from '@/components/admin/ImageDropzone'; // Додали імпорт завантажувача
+import { useArtworks } from '@/lib/artworks-context';
+import Link from 'next/link';
+import ImageDropzone from '@/components/admin/ImageDropzone';
 import { 
   Settings, 
   Layout, 
@@ -15,7 +15,7 @@ import {
   Save, 
   ExternalLink, 
   Loader2,
-  ArrowLeft,   // Додали іконки, яких не вистачало
+  ArrowLeft,   
   Eye,
   Plus,
   Trash2,
@@ -23,13 +23,13 @@ import {
   AlertCircle,
   ChevronUp,
   ChevronDown,
-  List,        // Для налаштувань галереї
-  Square      // Для футера
+  List,        
+  Square,
+  Check // ПРАВКА: Додано іконку Check
 } from 'lucide-react';
-import { Tab, SiteSettings, Artwork, StatIcon } from '@/types'; // Додали типи
+import { Tab, SiteSettings, Artwork, StatIcon } from '@/types';
 import { toast } from 'sonner';
 
-// Виправлено: TABS тепер відповідають тому, що рендериться нижче в коді
 const TABS: { id: Tab; label: string; icon: any }[] = [
   { id: 'general',          label: 'Загальне',   icon: Settings },
   { id: 'hero',             label: 'Hero',       icon: Layout },
@@ -41,8 +41,6 @@ const TABS: { id: Tab; label: string; icon: any }[] = [
   { id: 'footer',           label: 'Футер',      icon: Square },
 ];
 
-// ─── Main Page ────────────────────────────────────────────────────────────────
-
 export default function AdminPage() {
   const { settings, updateSettings, loading: settingsLoading, error: settingsError } = useSettings();
   const { artworks, addArtwork, updateArtwork, deleteArtwork } = useArtworks();
@@ -51,7 +49,6 @@ export default function AdminPage() {
   const [saving, setSaving] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Draft mirrors the live settings
   const [draft, setDraft] = useState<SiteSettings>(() =>
     JSON.parse(JSON.stringify(settings))
   );
@@ -96,16 +93,10 @@ export default function AdminPage() {
   
   const [artworkForm, setArtworkForm] = useState(emptyArtwork);
 
-  // Решта твого коду рендерингу (JSX) залишається без змін...
-  // (Я просто додав необхідні імпорти зверху, щоб Netlify «бачив» усі компоненти)
-
   return (
     <div className="min-h-screen bg-[#f9f9f7] flex flex-col">
-
-      {/* ── Top Bar ─────────────────────────────────────────────────────── */}
       <header className="bg-white border-b border-gray-100 px-4 md:px-6 py-0 flex items-center justify-between h-14 sticky top-0 z-40 gap-3">
         <div className="flex items-center gap-3 min-w-0">
-          {/* Mobile sidebar toggle */}
           <button
             className="md:hidden p-2 text-gray-400 hover:text-black -ml-1 min-h-[44px] min-w-[44px] flex items-center justify-center"
             onClick={() => setSidebarOpen(v => !v)}
@@ -145,9 +136,6 @@ export default function AdminPage() {
       </header>
 
       <div className="flex flex-1 relative">
-
-        {/* ── Sidebar ─────────────────────────────────────────────────────── */}
-        {/* Mobile overlay */}
         {sidebarOpen && (
           <div
             className="fixed inset-0 bg-black/30 z-30 md:hidden"
@@ -178,7 +166,6 @@ export default function AdminPage() {
           ))}
         </aside>
 
-        {/* ── Main Content ─────────────────────────────────────────────────── */}
         <main className="flex-1 p-4 md:p-8 overflow-y-auto min-w-0">
           {settingsLoading ? (
             <div className="flex items-center justify-center h-40 gap-3">
@@ -187,7 +174,6 @@ export default function AdminPage() {
             </div>
           ) : (
             <>
-              {/* ═══ GENERAL ═══════════════════════════════════════════════ */}
               {activeTab === 'general' && (
                 <Section title="Загальні налаштування">
                   <Card title="Логотип">
@@ -260,7 +246,6 @@ export default function AdminPage() {
                 </Section>
               )}
 
-              {/* ═══ HERO ═══════════════════════════════════════════════════ */}
               {activeTab === 'hero' && (
                 <Section title="Секція Hero">
                   <Card title="Тексти">
@@ -293,7 +278,6 @@ export default function AdminPage() {
                 </Section>
               )}
 
-              {/* ═══ ABOUT ══════════════════════════════════════════════════ */}
               {activeTab === 'about' && (
                 <Section title="Секція «Про мене»">
                   <Card title="Заголовки">
@@ -351,7 +335,6 @@ export default function AdminPage() {
                 </Section>
               )}
 
-              {/* ═══ STATS ══════════════════════════════════════════════════ */}
               {activeTab === 'stats' && (
                 <Section title="Статистичні лічильники">
                   <p className="text-xs text-gray-400 font-light -mt-2 mb-2">
@@ -389,7 +372,6 @@ export default function AdminPage() {
                             <option value="users">👥  Users (клієнти)</option>
                           </select>
                         </Field>
-                        {/* Mini preview */}
                         <div className="bg-gray-50 border border-gray-100 p-4 flex flex-col items-center gap-1.5 mt-1">
                           <span className="font-serif text-3xl font-light">{stat.value}</span>
                           <span className="text-xs tracking-widest uppercase text-gray-400 font-light">{stat.label}</span>
@@ -400,7 +382,6 @@ export default function AdminPage() {
                 </Section>
               )}
 
-              {/* ═══ GALLERY SETTINGS ══════════════════════════════════════ */}
               {activeTab === 'gallery-settings' && (
                 <Section title="Налаштування галереї">
                   <Card title="Заголовки">
@@ -450,7 +431,6 @@ export default function AdminPage() {
                 </Section>
               )}
 
-              {/* ═══ ARTWORKS ════════════════════════════════════════════════ */}
               {activeTab === 'artworks' && (
                 <div>
                   <div className="flex items-center justify-between mb-6 gap-3">
@@ -467,7 +447,6 @@ export default function AdminPage() {
                     )}
                   </div>
 
-                  {/* New artwork form */}
                   {newMode && (
                     <div className="mb-4">
                       <Card title="Нова картина">
@@ -491,11 +470,9 @@ export default function AdminPage() {
                     </div>
                   )}
 
-                  {/* Artwork list */}
                   <div className="space-y-2">
                     {artworks.map(artwork => (
                       <div key={artwork.id} className="bg-white border border-gray-100 overflow-hidden">
-                        {/* Row */}
                         <div className="flex items-center gap-3 p-3 md:p-4">
                           <img
                             src={artwork.image_url}
@@ -537,7 +514,6 @@ export default function AdminPage() {
                           </div>
                         </div>
 
-                        {/* Inline edit form */}
                         {editingId === artwork.id && (
                           <div className="border-t border-gray-100 p-4 bg-gray-50">
                             <ArtworkEditForm
@@ -563,7 +539,6 @@ export default function AdminPage() {
                 </div>
               )}
 
-              {/* ═══ CONTACT ═════════════════════════════════════════════════ */}
               {activeTab === 'contact' && (
                 <Section title="Контакти та форма">
                   <Card title="Контактна інформація">
@@ -604,7 +579,6 @@ export default function AdminPage() {
                 </Section>
               )}
 
-              {/* ═══ FOOTER ══════════════════════════════════════════════════ */}
               {activeTab === 'footer' && (
                 <Section title="Футер">
                   <Card title="Копірайт">
@@ -654,8 +628,6 @@ export default function AdminPage() {
   );
 }
 
-// ─── Form label display names ─────────────────────────────────────────────────
-
 const FORM_LABEL_NAMES: Record<string, string> = {
   name_label:          "Мітка поля «Ім'я»",
   name_placeholder:    "Placeholder «Ім'я»",
@@ -666,8 +638,6 @@ const FORM_LABEL_NAMES: Record<string, string> = {
   submit_label:        'Текст кнопки «Надіслати»',
   success_message:     'Повідомлення про успіх',
 };
-
-// ─── Layout helpers ───────────────────────────────────────────────────────────
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -698,8 +668,6 @@ function Field({ label, children, className = '' }: { label: string; children: R
     </div>
   );
 }
-
-// ─── Artwork forms ────────────────────────────────────────────────────────────
 
 type ArtworkDraft = Omit<Artwork, 'id' | 'created_at'>;
 
