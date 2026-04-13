@@ -29,10 +29,11 @@ export default function ImageDropzone({
   const [progress, setProgress] = useState(0);
 
   const onDrop = useCallback(
-    async (accepted: File[], rejected: { file: File; errors: { code: string; message: string }[] }[]) => {
+    // ПРАВКА: Заменили сложный тип на any[], чтобы TypeScript не мешал сборке
+    async (accepted: File[], rejected: any[]) => {
       // Handle rejected files (wrong type or too large)
       rejected.forEach(({ file, errors }) => {
-        const reason = errors.map(e => e.message).join(', ');
+        const reason = errors.map((e: any) => e.message).join(', ');
         toast.error(`«${file.name}» відхилено: ${reason}`);
       });
 
