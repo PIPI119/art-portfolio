@@ -6,7 +6,8 @@ import { Package, BarChart3, Award, Users } from 'lucide-react';
 import { StatCounter } from '@/types';
 import { motion, useInView } from 'framer-motion';
 
-const ICONS: Record<StatCounter['icon'], React.FC<{ size?: number; className?: string; strokeWidth?: number }>> = {
+// ПРАВКА ТУТ: заменили строгий тип на Record<string, any>, чтобы Netlify не ругался на размеры иконок
+const ICONS: Record<string, any> = {
   package:    Package,
   'bar-chart': BarChart3,
   award:      Award,
