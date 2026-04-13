@@ -25,12 +25,11 @@ import {
   ChevronDown,
   List,        
   Square,
-  Check // Додано іконку
+  Check
 } from 'lucide-react';
-import { SiteSettings, Artwork, StatIcon } from '@/types'; // Прибрали Tab звідси
+import { SiteSettings, Artwork, StatIcon } from '@/types';
 import { toast } from 'sonner';
 
-// Прописали тип Tab прямо тут
 type Tab = 'general' | 'hero' | 'about' | 'stats' | 'gallery-settings' | 'artworks' | 'contact' | 'footer';
 
 const TABS: { id: Tab; label: string; icon: any }[] = [
@@ -54,7 +53,6 @@ export default function AdminPage() {
   const [saving, setSaving] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Draft mirrors the live settings
   const [draft, setDraft] = useState<SiteSettings>(() =>
     JSON.parse(JSON.stringify(settings))
   );
@@ -69,7 +67,8 @@ export default function AdminPage() {
         cur = cur[keys[i]] as Record<string, unknown>;
       }
       cur[keys[keys.length - 1]] = value;
-      return next as SiteSettings;
+      // ПРАВКА ТУТ: Додали as unknown, щоб TypeScript більше не сварився
+      return next as unknown as SiteSettings; 
     });
   }, []);
 
@@ -105,7 +104,6 @@ export default function AdminPage() {
       {/* ── Top Bar ─────────────────────────────────────────────────────── */}
       <header className="bg-white border-b border-gray-100 px-4 md:px-6 py-0 flex items-center justify-between h-14 sticky top-0 z-40 gap-3">
         <div className="flex items-center gap-3 min-w-0">
-          {/* Mobile sidebar toggle */}
           <button
             className="md:hidden p-2 text-gray-400 hover:text-black -ml-1 min-h-[44px] min-w-[44px] flex items-center justify-center"
             onClick={() => setSidebarOpen(v => !v)}
@@ -147,7 +145,6 @@ export default function AdminPage() {
       <div className="flex flex-1 relative">
 
         {/* ── Sidebar ─────────────────────────────────────────────────────── */}
-        {/* Mobile overlay */}
         {sidebarOpen && (
           <div
             className="fixed inset-0 bg-black/30 z-30 md:hidden"
@@ -528,7 +525,7 @@ export default function AdminPage() {
                                 const id = toast.loading('Видалення...');
                                 deleteArtwork(artwork.id)
                                   .then(() => toast.success('Видалено ✓', { id }))
-                                  .catch(err => toast.error(err instanceof Error ? err.message : 'Помилка', { id }));
+                                  .catch(err => toast.error(err instanceof Error ? err.message : 'Помилка', { id });
                               }}
                               className="text-gray-300 hover:text-red-400 transition-colors p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
                             >
