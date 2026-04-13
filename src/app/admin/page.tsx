@@ -67,8 +67,7 @@ export default function AdminPage() {
         cur = cur[keys[i]] as Record<string, unknown>;
       }
       cur[keys[keys.length - 1]] = value;
-      // ПРАВКА ТУТ: Додали as unknown, щоб TypeScript більше не сварився
-      return next as unknown as SiteSettings; 
+      return next as unknown as SiteSettings;
     });
   }, []);
 
@@ -89,14 +88,20 @@ export default function AdminPage() {
   const [newMode, setNewMode] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   
-  const emptyArtwork = (): Omit<Artwork,'id'|'created_at'> => ({
-    title: '', year: new Date().getFullYear(), dimensions: '',
-    technique: '', image_url: '', description: '',
-    category: draft.gallery.categories.find(c => c !== 'Всі') ?? 'Пейзаж',
-    sold: false, price: null, sort_order: artworks.length + 1,
-  });
+  // ПРАВКА: Переписали стрелочную функцию в обычную, чтобы компилятор не ломался на типах
+  function createEmptyArtwork(): Omit<Artwork, 'id' | 'created_at'> {
+    return {
+      title: '', year: new Date().getFullYear(), dimensions: '',
+      technique: '', image_url: '', description: '',
+      category: draft.gallery.categories.find(c => c !== 'Всі') ?? 'Пейзаж',
+      sold: false, price: null, sort_order: artworks.length + 1,
+    };
+  }
   
-  const [artworkForm, setArtworkForm] = useState(emptyArtwork);
+  const [artworkForm, setArtworkForm] = useState(createEmptyArtwork);
+
+  // ПРАВКА: Вынесли преобразование типов из JSX наружу
+  const formLabelsArray = Object.entries(draft.form_labels) as [keyof typeof draft.form_labels, string][];
 
   return (
     <div className="min-h-screen bg-[#f9f9f7] flex flex-col">
@@ -457,7 +462,7 @@ export default function AdminPage() {
                     </h2>
                     {!newMode && (
                       <button
-                        onClick={() => { setNewMode(true); setArtworkForm(emptyArtwork()); setEditingId(null); }}
+                        onClick={() => { setNewMode(true); setArtworkForm(createEmptyArtwork()); setEditingId(null); }}
                         className="admin-btn">
                         <Plus size={13} /> Додати
                       </button>
@@ -525,7 +530,7 @@ export default function AdminPage() {
                                 const id = toast.loading('Видалення...');
                                 deleteArtwork(artwork.id)
                                   .then(() => toast.success('Видалено ✓', { id }))
-                                  .catch(err => toast.error(err instanceof Error ? err.message : 'Помилка', { id });
+                                  .catch(err => toast.error(err instanceof Error ? err.message : 'Помилка', { id }));
                               }}
                               className="text-gray-300 hover:text-red-400 transition-colors p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
                             >
@@ -590,7 +595,7 @@ export default function AdminPage() {
 
                   <Card title="Мітки форми">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {(Object.entries(draft.form_labels) as [keyof typeof draft.form_labels, string][]).map(([key, val]) => (
+                      {formLabelsArray.map(([key, val]) => (
                         <Field key={key} label={FORM_LABEL_NAMES[key] ?? key}>
                           <input className="admin-input" value={val}
                             onChange={e => set(`form_labels.${key}`, e.target.value)} />
